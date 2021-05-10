@@ -11,4 +11,3 @@ bot.on('text', (ctx) => {
 });
 
 //test
-//new test
