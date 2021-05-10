@@ -9,4 +9,3 @@ bot.on('text', (ctx) => {
    ctx.reply(ctx.message.text)
    
 });
-//test
