@@ -8,7 +8,11 @@ bot.launch() // запуск бота
 bot.on('text', (ctx) => {
    ctx.reply(ctx.message.text)
    
+<<<<<<< HEAD
 });
 
 //test
 //new test
+=======
+});
+>>>>>>> parent of 3741236 (new branch test)
