@@ -2,8 +2,9 @@ const { Telegraf, Telegram } = require('telegraf')
 var needle = require('needle');
 const parser = require("./parser/Parser");
 const fs = require('fs');
+require('dotenv').config()
 
-/*const bot = new Telegraf('1684695082:AAFbWgsEGgvYeJUKDRuTEwszsfkHVtvAF0Q')  
+/*const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN)  
 bot.start((ctx) => ctx.reply('Welcome'))  
 bot.help((ctx) => ctx.reply('Send me a sticker'))  
 bot.on('sticker', (ctx) => ctx.reply('sticker')) //bot.on это обработчик введенного юзером сообщения, в данном случае он отслеживает стикер, можно использовать обработчик текста или голосового сообщения
@@ -18,7 +19,7 @@ bot.on('text', (ctx) => {
 
 console.log("asfd")
 //создаю http-запрос
-needle('get','https://www.kinopoisk.ru/s/type/film/list/1/find/terminator/')
+needle('get',process.env.KINOPOISK_URL)
 .then(function(response){ //обработчик ответа
   console.log("then")
   let result =parser.parseKinopoisk(response.body)//парсим ответ 
