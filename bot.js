@@ -1,6 +1,6 @@
 const { Telegraf, Telegram } = require('telegraf')
 var needle = require('needle');
-var cheerio = require('cheerio');
+const parser = require("./parser/Parser");
 const fs = require('fs');
 
 /*const bot = new Telegraf('1684695082:AAFbWgsEGgvYeJUKDRuTEwszsfkHVtvAF0Q')  
@@ -12,46 +12,27 @@ bot.launch() // запуск бота
 bot.on('text', (ctx) => {
    ctx.reply(ctx.message.text)
    
-
 });*/
 
+
+
+console.log("asfd")
 //создаю http-запрос
 needle('get','https://www.kinopoisk.ru/s/type/film/list/1/find/terminator/')
 .then(function(response){ //обработчик ответа
-  let result =parseKinopoisk(response.body)
-  let data = JSON.stringify(result);
-  fs.writeFile("result.JSON", data, function(error){ //пока передавать результат некуда, поэтому просто записываю в файл
- 
-    if(error) throw error; // если возникла ошибка
-
-
-});
+  console.log("then")
+  let result =parser.parseKinopoisk(response.body)//парсим ответ 
+  console.log("parser finished")
+  let data = JSON.stringify(result);// переводим ответ в формат JSON 
+  fs.writeFile("result.JSON", data, function(err){ //записываем файл
+    if(err) throw err; // если возникла ошибка
+  })
 })
 .catch(function(response){//обработчик ошибки 
-  if (response.statusCode != 200)
+  if (response.error!= 200)
   {
-  throw error
+  throw response.error
   }
 })
-  console.log('ass')
 
-function parseKinopoisk(html) {
-  let results =[]
-  const $=cheerio.load(html);// загружаю html 
-  
-  //область парсинга начало 
-  let elemets =$(".search_results").find(".element").children('.info')
-
-  elemets.each(function(){
-     
-    results.push({
-      titleEng:$(this).children(".name").children().first().text().trim(),
-      year:$(this).children(".name").children().first().next().text().trim(),
-      titleRus:$(this).children(".name").next().text().split(',')[0].trim()
-    })
-  });
-  //область парсинга конец
-
-  return results
-}
 
